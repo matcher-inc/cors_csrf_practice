@@ -1,8 +1,8 @@
 FROM node:16.15.0
 
-WORKDIR /vue
+COPY ./frontend /vue
 
-COPY ./frontend/package.json /vue/package.json
+WORKDIR /vue
 
 RUN npm install
 

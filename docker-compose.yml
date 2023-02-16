@@ -12,11 +12,13 @@ services:
     build: ./vue
     volumes:
       - ./vue/frontend:/vue:delegated
+      - /vue/node_modules
     ports:
       - "8080:8080"
   vue2:
     build: ./vue
     volumes:
       - ./vue/frontend:/vue:delegated
+      - /vue/node_modules
     ports:
       - "8081:8080"
