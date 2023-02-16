@@ -18,9 +18,21 @@ const BASE_URL = 'http://localhost:3000';
 export default {
   data() {
     return {
+      csrfToken: '',
       messageGET: "---",
       messagePOST: "---",
     };
+  },
+  async created() {
+    axios.defaults.withCredentials = true;
+    const url = this.getUrl('get_csrf_token');
+
+    await this.request('get', url).then(res => {
+      this.csrfToken = res.headers['x-csrf-token'];
+      console.log(this.csrfToken)
+    }).catch(res => {
+      console.log(res);
+    });
   },
   methods: {
     async handleClickGETButton() {
@@ -56,7 +68,9 @@ export default {
 
     async request(method, url, ...args) {
       return await axios.create({
-        headers: {},
+        headers: {
+          'X-CSRF-Token': this.csrfToken,
+        },
       })[method](url, ...args);
     },
   },
