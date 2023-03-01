@@ -20,6 +20,7 @@ export default {
     return {
       messageGET: "---",
       messagePOST: "---",
+      csrf_header: "",
     };
   },
   methods: {
@@ -56,10 +57,21 @@ export default {
 
     async request(method, url, ...args) {
       return await axios.create({
-        headers: {},
+        headers: {"X-CSRF-Token":this.csrf_header},
       })[method](url, ...args);
     },
   },
+  async created(){
+    axios.defaults.withCredentials = true;
+    const url = this.getUrl('csrf_api');
+
+    await this.request('get', url).then(res => {
+      console.log(res);
+      this.csrf_header = res.headers["x-csrf-token"]
+    }).catch(res => {
+      console.log(res);
+    });
+  }
 }
 </script>
 
